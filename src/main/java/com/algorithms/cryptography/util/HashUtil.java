@@ -11,14 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class HashUtil {
-	private static final int iterationCount = 10000;
+
 	private static final int keyLength = 256;
 
-	public byte[] generatePBKDF2Key(String password, String salt) {
+	public byte[] generatePBKDF2Key(String password, String salt, int iterationCount) {
 		PKCS5S2ParametersGenerator generator = new PKCS5S2ParametersGenerator();
-		generator.init(password.getBytes(), salt.getBytes(), iterationCount);
-		KeyParameter keyParameter = (KeyParameter) generator.generateDerivedMacParameters(keyLength);
-
+		generator.init(PKCS5S2ParametersGenerator.PKCS5PasswordToBytes(password.toCharArray()), salt.getBytes(),
+				iterationCount);
+		KeyParameter keyParameter = (KeyParameter) generator.generateDerivedParameters(keyLength);
 		return keyParameter.getKey();
 	}
 
@@ -35,8 +35,8 @@ public class HashUtil {
 			long digit = number % 10;
 			long encryptedDigit = operation.applyAsLong(digit);
 			result += encryptedDigit * multiplier;
-			multiplier *= 10;
-			number /= 10;
+			multiplier *= 34649;
+			number /= 10709;
 		}
 
 		log.info("Long value is {}", result);

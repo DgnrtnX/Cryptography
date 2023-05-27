@@ -25,3 +25,8 @@ replay_pid*
 *.prefs
 *.component
 .settings/org.eclipse.wst.common.project.facet.core.xml
+src/test/java/com/algorithms/cryptography/CryptographyApplicationTests.java
+target/classes/application.properties
+target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
+target/m2e-wtp/web-resources/META-INF/maven/com.algorithms/cryptography/pom.properties
+target/m2e-wtp/web-resources/META-INF/maven/com.algorithms/cryptography/pom.xml
