@@ -27,19 +27,20 @@ public class GCMService {
 	public void encryptGCM(RequestDataModel requestData) {
 		log.info("ENCRYPTING DATA");
 		try {
-			long nonce = ZonedDateTime.parse(requestData.getRequestTime()).toInstant().toEpochMilli();
-			log.info("nonce value is {}", nonce);
+			long epochTime = ZonedDateTime.parse(requestData.getRequestTime()).toInstant().toEpochMilli();
+			log.info("epochTime value is {}", epochTime);
 
-			byte[] key = hashUtil.generatePBKDF2Key(requestData.getRequestorId(), hashUtil.cipherNumber(nonce));
+			String nonce = hashUtil.cipherNumber(epochTime);
+
+			byte[] key = hashUtil.generatePBKDF2Key(requestData.getRequestorId(), nonce, nonce.length());
 
 			List<String> associatesList = Arrays.asList(requestData.getRequestorId(), requestData.getDs(),
 					requestData.getRequestTime());
 
-			String encrptedData = aesgcmUtil.encrypt(requestData.getEncData(), key, String.valueOf(nonce).getBytes(),
-					associatesList);
+			String encrptedData = aesgcmUtil.encrypt(requestData.getEncData(), key, nonce.getBytes(), associatesList);
 			log.info("encrypted data is {}", encrptedData);
 
-		} catch (CryptoException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -48,19 +49,20 @@ public class GCMService {
 	public void decryptGCM(RequestDataModel requestData) {
 		log.info("DECRYPTING DATA");
 		try {
-			long nonce = ZonedDateTime.parse(requestData.getRequestTime()).toInstant().toEpochMilli();
-			log.info("nonce value is {}", nonce);
+			long epochTime = ZonedDateTime.parse(requestData.getRequestTime()).toInstant().toEpochMilli();
+			log.info("epochTime value is {}", epochTime);
 
-			byte[] key = hashUtil.generatePBKDF2Key(requestData.getRequestorId(), hashUtil.cipherNumber(nonce));
+			String nonce = hashUtil.cipherNumber(epochTime);
+
+			byte[] key = hashUtil.generatePBKDF2Key(requestData.getRequestorId(), nonce, nonce.length());
 
 			List<String> associatesList = Arrays.asList(requestData.getRequestorId(), requestData.getDs(),
 					requestData.getRequestTime());
 
-			String decryptedData = aesgcmUtil.decrypt(requestData.getEncData(), key, String.valueOf(nonce).getBytes(),
-					associatesList);
+			String decryptedData = aesgcmUtil.decrypt(requestData.getEncData(), key, nonce.getBytes(), associatesList);
 			log.info("Decrypted Data is {}", decryptedData);
 
-		} catch (CryptoException e) { 
+		} catch (CryptoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
