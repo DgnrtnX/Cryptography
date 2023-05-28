@@ -1,5 +1,7 @@
 package com.algorithms.cryptography.service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +34,13 @@ public class GCMService {
 
 			String nonce = hashUtil.cipherNumber(epochTime);
 
-			byte[] key = hashUtil.generatePBKDF2Key(requestData.getRequestorId(), nonce, nonce.length());
+			byte[] key = null;
+			try {
+				key = hashUtil.generatePBKDF2Key(requestData.getRequestorId(), nonce, nonce.length());
+			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			List<String> associatesList = Arrays.asList(requestData.getRequestorId(), requestData.getDs(),
 					requestData.getRequestTime());
@@ -54,7 +62,13 @@ public class GCMService {
 
 			String nonce = hashUtil.cipherNumber(epochTime);
 
-			byte[] key = hashUtil.generatePBKDF2Key(requestData.getRequestorId(), nonce, nonce.length());
+			byte[] key = null;
+			try {
+				key = hashUtil.generatePBKDF2Key(requestData.getRequestorId(), nonce, nonce.length());
+			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			List<String> associatesList = Arrays.asList(requestData.getRequestorId(), requestData.getDs(),
 					requestData.getRequestTime());

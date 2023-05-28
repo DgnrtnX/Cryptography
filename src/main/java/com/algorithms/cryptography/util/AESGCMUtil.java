@@ -31,7 +31,6 @@ public class AESGCMUtil {
 		byte[] plaintextBytes = plaintext.getBytes(StandardCharsets.UTF_8);
 		byte[] ciphertext = new byte[cipher.getOutputSize(plaintextBytes.length)];
 		int len = cipher.processBytes(plaintextBytes, 0, plaintextBytes.length, ciphertext, 0);
-		log.info("cipher length is {}", len);
 
 		try {
 			cipher.doFinal(ciphertext, len);
@@ -63,7 +62,6 @@ public class AESGCMUtil {
 
 		byte[] decryptedBytes = new byte[cipher.getOutputSize(buffer.remaining())];
 		int len = cipher.processBytes(buffer.array(), buffer.position(), buffer.remaining(), decryptedBytes, 0);
-		log.info("cipher length is {}", len);
 		try {
 			cipher.doFinal(decryptedBytes, len);
 		} catch (InvalidCipherTextException e) {
